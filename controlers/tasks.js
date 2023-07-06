@@ -1,16 +1,56 @@
+const Task = require('../models/task')
 // Get all tasks
-exports.getAllTasks = (req, res) => {
-  res.send('All tasks')
+exports.getAllTasks = async (req, res) => {
+  try {
+  const tasks = await Task.find()
+  res.status(200).json({
+    status: "Success",
+    data: {
+      tasks
+    }
+  })
+  } catch(err) {
+    res.status(400).json({
+      status: "Fail",
+      message: "Bad request"
+    })
+  }
 }
 
 // save tasks
-exports.saveTasks = (req, res) => {
-  res.send('Saving tasks...')
+exports.saveTasks = async (req, res) => {
+  try {
+    const task = await Task.create(req.body)
+    res.status(201).json({
+      status: "Success",
+      data: {
+        task
+      }
+    })
+  } catch(err) {
+    res.status(400).json({
+      status: "Fail",
+      message: "Bad request"
+    })
+  }
 }
 
 // Read single task
-exports.getSingleTask = (req, res) => {
-  res.send('Getting single task')
+exports.getSingleTask = async (req, res) => {
+  try{
+    const task = await Task.findById(req.params.id)
+    res.status(200).json({
+      status: "Succes",
+      data: {
+        task
+      }
+    })
+  } catch(err) {
+    res.status(500).json({
+      status: "Fail",
+      message: "An error occured"
+    })
+  }
 }
 
 // Update Task
